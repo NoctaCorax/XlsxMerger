@@ -1,0 +1,27 @@
+﻿<!-- ReadmeWindow.xaml -->
+<Window x:Class="XlsxMerger.ReadmeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XlsxMerger"
+        mc:Ignorable="d"
+        Title="Documentation" Height="700" Width="900"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid>
+        <!-- 
+            Changed from TextBox to FlowDocumentScrollViewer.
+            This control is designed to display rich, formatted text (like a web page or Word doc).
+        -->
+        <FlowDocumentScrollViewer x:Name="DocViewer" VerticalScrollBarVisibility="Auto">
+            <FlowDocument x:Name="MainDocument" 
+                          FontFamily="Segoe UI" 
+                          FontSize="14" 
+                          PagePadding="20"
+                          TextAlignment="Left">
+                <!-- Content will be generated dynamically in C# -->
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+    </Grid>
+</Window>

@@ -1,0 +1,108 @@
+﻿<!-- MainWindow.xaml -->
+<Window x:Class="XlsxMerger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XlsxMerger"
+        mc:Ignorable="d"
+        Title="Xlsx Merger v1.0" Height="700" Width="900"
+        WindowStartupLocation="CenterScreen" Background="#F5F5F5"
+        Closing="Window_Closing">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Row 0: Input Files -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 1: Output Settings -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 2: Status & Progress -->
+            <RowDefinition Height="Auto"/>
+            <!-- Row 3: Operation/Buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- SECTION 1: INPUT FILES -->
+        <GroupBox Grid.Row="0" Header="INPUT FILES" Margin="0,0,0,15" Padding="10">
+            <StackPanel>
+                <!-- Modified StackPanel to place Help button on the right -->
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <!-- Spacer -->
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" x:Name="BtnSelectFiles" Content="Select Files..." Width="120" Height="25" Margin="0,0,10,0" Click="BtnSelectFiles_Click"/>
+                    <Button Grid.Column="1" x:Name="BtnClearList" Content="Clear List" Width="100" Height="25" Click="BtnClearList_Click"/>
+
+                    <!-- NEW README BUTTON -->
+                    <Button Grid.Column="3" x:Name="BtnReadme" Content="Help / ReadMe" Width="100" Height="25" Click="BtnReadme_Click" Background="#E0E0FF" FontWeight="SemiBold"/>
+                </Grid>
+
+                <DataGrid x:Name="DgFiles" Height="150" AutoGenerateColumns="False" CanUserAddRows="False" Background="White">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Filename" Binding="{Binding Filename}" Width="200"/>
+                        <DataGridTextColumn Header="Path" Binding="{Binding FilePath}" Width="*"/>
+                        <DataGridTextColumn Header="Size" Binding="{Binding SizeFormatted}" Width="80"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- SECTION 2: OUTPUT SETTINGS -->
+        <GroupBox Grid.Row="1" Header="OUTPUT SETTINGS" Margin="0,0,0,15" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Destination Folder:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBox x:Name="TxtOutputDir" Width="600" Height="25" IsReadOnly="True" Margin="0,0,10,0" Text="Click Browse to select..."/>
+                    <Button x:Name="BtnBrowse" Content="Browse..." Width="100" Height="25" Click="BtnBrowse_Click"/>
+                </StackPanel>
+
+                <Grid Margin="0,10,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Filename Configuration:" FontWeight="Bold" Grid.Column="0"/>
+                    <Button x:Name="BtnRestoreDefaults" Grid.Column="2" Content="Restore Defaults" Width="120" Height="20" FontSize="10" Click="BtnRestoreDefaults_Click"/>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Prefix:" VerticalAlignment="Center" Width="50"/>
+                    <TextBox x:Name="TxtPrefix" Width="100" Margin="0,0,20,0" TextChanged="OnTextChanged"/>
+
+                    <TextBlock Text="Template:" VerticalAlignment="Center" Width="60"/>
+                    <TextBox x:Name="TxtTemplate" Width="200" Text="merged_%d-%mo-%yyyy" Margin="0,0,20,0" TextChanged="OnTextChanged"/>
+
+                    <TextBlock Text="Suffix:" VerticalAlignment="Center" Width="50"/>
+                    <TextBox x:Name="TxtSuffix" Width="100" TextChanged="OnTextChanged"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <CheckBox x:Name="ChkReplaceSpaces" Content="Replace spaces with underscore (_)" IsChecked="True" Margin="0,0,20,0" Checked="OnCheckChanged" Unchecked="OnCheckChanged"/>
+                    <CheckBox x:Name="ChkAllowOverwrite" Content="Allow overwrite" IsChecked="False" Checked="OnCheckChanged" Unchecked="OnCheckChanged" ToolTip="If checked, you will be asked to confirm overwriting existing files."/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                    <TextBlock Text="Preview: " FontWeight="Bold"/>
+                    <TextBlock x:Name="TxtPreview" Text="waiting..." Foreground="Green" FontWeight="SemiBold"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- SECTION 3: PROGRESS & STATUS -->
+        <StackPanel Grid.Row="2" Margin="0,0,0,15">
+            <TextBlock x:Name="TxtStatus" Text="Ready" Margin="0,0,0,5" FontWeight="Bold" Foreground="#555"/>
+            <ProgressBar x:Name="PbStatus" Height="20" Minimum="0" Maximum="100" Value="0"/>
+        </StackPanel>
+
+        <!-- SECTION 4: ACTIONS -->
+        <Button Grid.Row="3" x:Name="BtnMerge" Content="MERGE FILES" 
+                Height="40" Background="#DDDDDD" FontWeight="Bold" Click="BtnMerge_Click"/>
+    </Grid>
+</Window>
